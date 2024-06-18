@@ -1,0 +1,179 @@
+ TITLE: mediation;
+  DATA:   FILE is 
+mplus_data.dat;
+VARIABLE: NAMES ARE 
+subnum
+age_b_y
+age_b_m
+age_2_y
+age_2_m
+age_3_y
+age_3_m
+female
+gender
+psweight
+npweight
+np_ps_weight
+famid
+relation
+demo_prim
+siten
+NHWHITE
+AFRICAN
+HISPANIC
+OTHER
+cbcl_total_3
+COIL1_b
+COIL2_b
+COIL3_b
+COIL4_b
+COIL5_b
+COIL1_2
+COIL2_2
+COIL3_2
+COIL4_2
+COIL5_2
+serial_b
+serial_2
+vol1_2
+vol2_2
+vol3_2
+vol4_2
+vol5_2
+vol6_2
+vol7_2
+vol8_2
+vol9_2
+vol10_2
+vol11_2
+vol12_2
+vol13_2
+vol14_2
+vol15_2
+vol16_2
+vol17_2
+vol18_2
+vol19_2
+vol20_2
+vol21_2
+vol22_2
+vol23_2
+vol24_2
+vol25_2
+vol26_2
+vol27_2
+vol28_2
+vol29_2
+vol30_2
+vol31_2
+vol32_2
+vol33_2
+vol34_2
+vol35_2
+vol36_2
+vol37_2
+vol38_2
+vol39_2
+vol40_2
+vol41_2
+vol42_2
+vol43_2
+vol44_2
+vol45_2
+vol46_2
+vol47_2
+vol48_2
+vol49_2
+vol50_2
+vol51_2
+vol52_2
+vol53_2
+vol54_2
+vol55_2
+vol56_2
+vol57_2
+vol58_2
+vol59_2
+vol60_2
+vol61_2
+vol62_2
+vol63_2
+vol64_2
+vol65_2
+vol66_2
+vol67_2
+vol68_2
+vol69_2
+vol70_2
+vol71_2
+vol72_2
+vol73_2
+vol74_2
+vol75_2
+vol76_2
+vol77_2
+vol78_2
+vol79_2
+vol80_2
+vol81_2
+vol82_2
+vol83_2
+vol84_2
+vol85_2
+vol86_2
+vol87_2
+total_l_2
+total_r_2
+total_2
+subcortical_sum_2
+GENERAL
+FAMHX
+SES
+CAREGVR
+ENVIRON
+;
+
+USEVARIABLES ARE 
+GENERAL
+cbcl_total_3
+vol16_2;
+
+MISSING ARE .;
+STRATIFICATION=SITEN;
+CLUSTER=FAMID;
+GROUPING=female (0=male, 1=female);
+  
+    DEFINE: STANDARDIZE
+    vol16_2;  
+    
+  ANALYSIS:
+  ESTIMATOR=MLR;
+  TYPE=COMPLEX;
+
+MODEL:
+cbcl_total_3 ON GENERAL vol16_2;
+vol16_2 ON GENERAL;
+
+MODEL INDIRECT:
+cbcl_total_3 IND GENERAL;
+
+MODEL male:
+vol16_2 ON GENERAL (a1);
+cbcl_total_3 ON vol16_2 (b1);
+cbcl_total_3 ON GENERAL (c1);
+
+MODEL female:
+vol16_2 ON GENERAL (a2);
+cbcl_total_3 ON vol16_2 (b2);
+cbcl_total_3 ON GENERAL (c2);
+
+MODEL CONSTRAINT:
+NEW (ind1 ind2);
+ind1=a1*b1;
+ind2=a2*b2;
+
+MODEL TEST:
+0=ind1-ind2;
+
+OUTPUT:
+STANDARDIZED sampstat tech4 cinterval;
