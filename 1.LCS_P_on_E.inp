@@ -1,0 +1,105 @@
+TITLE: ABCD Bifactor;
+DATA:FILE is 
+data_factors.dat;
+VARIABLE: NAMES ARE
+subnum
+age_b_y
+age_b_m
+age_2_y
+age_2_m
+age_3_y
+age_3_m
+female
+gender
+psweight
+npweight
+npweight2
+famid
+relation
+demo_prim
+siten
+NHWHITE
+AFRICAN
+HISPANIC
+OTHER
+GENERAL
+FAMHX
+SES
+CAREGVR
+ENVIRON
+GENERAL3
+EXT3
+ADHD3
+INT3
+BGENERAL
+BEXT
+BADHD
+BINT
+cbcl_t3
+cbcl_tb
+GENERAL_C
+EXT_C
+ADHD_C
+INT_C
+cbcl_c
+;
+
+USEVARIABLES ARE 
+GENERAL
+FAMHX
+SES
+CAREGVR
+ENVIRON
+GENERAL_C
+EXT_C
+ADHD_C
+INT_C
+age_b_m
+female
+NHWHITE 
+AFRICAN 
+HISPANIC
+;
+
+MISSING ARE .;
+  STRATIFICATION=SITEN;
+  CLUSTER=FAMID;
+  WEIGHT=PSWEIGHT;
+  
+  ANALYSIS:
+  ITERATIONS=5000000;
+  TYPE=COMPLEX;
+  
+MODEL:
+
+GENERAL_C INT_C EXT_C ADHD_C ON 
+GENERAL FAMHX SES CAREGVR ENVIRON 
+age_b_m
+female
+NHWHITE 
+AFRICAN 
+HISPANIC
+; 
+
+OUTPUT: STDYX;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
